@@ -1,7 +1,7 @@
 Advanced course "Introduction to DevOps"  
 https://www.youtube.com/playlist?list=PLQoP6S9f51EZM0-WqAWAAkwAB28gnWkTb
 
-1. Working in the terminal  
+1. [Working in the terminal](https://github.com/W1ckedS1ck/SelfPractice/tree/main/Advanced%20course%20"Introduction%20to%20DevOps"/1#readme)  
 1.1: Introduction to DevOps  
 1.2: Linux Basics  
 1.3: SSH and Firewall  

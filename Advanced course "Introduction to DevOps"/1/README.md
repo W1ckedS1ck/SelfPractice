@@ -21,8 +21,17 @@
 /tmp - Temporary files.  
 /usr - Contains user applications and utilities.  
 /var - Variable data files such as logs, databases, and spool files.  
- - user / rights management  
- sudo  
+ - user / rights management
+```bash 
+# Создать нового пользователя с домашним каталогом
+sudo useradd -m newuser
+
+# Установить пароль для нового пользователя
+sudo passwd newuser
+
+# Добавить нового пользователя в группу sudo
+sudo usermod -aG sudo newuser
+```
  useradd  
  passwd  
  userdel  

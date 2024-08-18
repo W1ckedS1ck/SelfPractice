@@ -1,0 +1,21 @@
+#!/bin/bash
+#-------------------------------------------------------------------------------------
+# Latest version could be found https://grafana.com/grafana/download?edition=oss     #
+#-------------------------------------------------------------------------------------
+GRAFANA_VERSION="11.1.4"
+PROMETHEUS_URL="http://172.31.29.90:9090" # UPDATE YOUR PROM URL!!
+
+apt-get install -y apt-transport-https software-properties-common wget
+mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+apt-get update
+apt-get install -y adduser libfontconfig1 musl
+
+wget https://dl.grafana.com/oss/release/grafana_${GRAFANA_VERSION}_amd64.deb
+dpkg -i grafana_${GRAFANA_VERSION}_amd64.deb
+
+systemctl daemon-reload
+systemctl enable grafana-server
+systemctl start grafana-server
+systemctl status grafana-server

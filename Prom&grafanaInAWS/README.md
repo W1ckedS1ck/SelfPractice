@@ -1,6 +1,6 @@
 https://www.youtube.com/playlist?list=PLg5SS_4L6LYu6qjwwwjt2WRsEudkzqB7J  
 
-<h3 style="text-align: center;">Prometheus + Grafana basics</h3>  
+<h3 style="text-align: center;">Prometheus + Grafana basics + Victoria Metrics</h3>  
 
 **How to install and set up Prometheus Server?**  
 
@@ -29,3 +29,26 @@ nano /etc/prometheus/prometheus.yml
 
  - Create or import dashbord(s)  
     <img width="641" alt="image" src="https://github.com/user-attachments/assets/e3054729-bf30-460a-b37e-9d3da8a4e147">
+
+**How to install Victoria Metrics?**  
+ - Run it as sudo (or change the version to one you need)  
+[install_Victoria Metrics](https://github.com/W1ckedS1ck/SelfPractice/blob/main/Prom%26grafanaInAWS/install_victoria_metrics.sh)  
+nano /etc/prometheus/prometheus.yml  
+    ```yml
+   scrape_configs:
+     - job_name: "prometheus"
+       static_configs:
+         - targets: ["localhost:8428"]
+   remote_write:
+     - url: http://localhost:8428/api/v1/write
+       queue_config:
+         max_samples_per_send: 10000
+         capacity: 20000
+         max_shards: 30
+    ```
+    http://IP:8428/vmui/?#/dashboards shows this  
+    ![image](https://github.com/user-attachments/assets/8be5fbb6-c40c-4bb0-9272-4789c5305944)
+ - Create config for grafana  
+    <img width="395" alt="image" src="https://github.com/user-attachments/assets/d85f9880-d552-4bf3-9802-28b8d84f6762">
+ - Create or import dashbord(s)  
+    <img width="1278" alt="image" src="https://github.com/user-attachments/assets/b7bd97e4-de10-4a3e-a8c1-572d9081cdb6">

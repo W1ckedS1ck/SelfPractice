@@ -1,100 +1,71 @@
-# Define the stages of the pipeline
+# Define pipeline stages
 stages:
-  - init
   - setup
-  - build
-  - lint
+  - install
+  - configure
   - test
-  - security
-  - package
-  - deploy
-  - notify
-  - cleanup
+  - ip
+  #- cleanup
 
-# Step 1: Initialization
-init:
-  stage: init
-  script:
-    - echo "Initializing the pipeline..."
-
-# Step 2: Setup Environment
+# Step 1: Setup Environment
 setup:
   stage: setup
+  image: ubuntu:latest
   script:
-    - echo "Setting up environment..."
-  dependencies:
-    - init
+    - echo "Updating package list..."
+    - sudo apt-get update
+    - echo "Installing necessary packages..."
+    - sudo apt-get install -y curl wget
 
-# Step 3: Build
-build:
-  stage: build
+# Step 2: Install Apache
+install:
+  stage: install
+  image: ubuntu:latest
   script:
-    - echo "Building the project..."
+    - echo "Installing Apache..."
+    - sudo apt-get install -y apache2
   artifacts:
     paths:
-      - build/
+      - /etc/apache2/
     expire_in: 1 hour
-  dependencies:
-    - setup
 
-# Step 4: Linting
-lint:
-  stage: lint
+# Step 3: Configure Apache
+configure:
+  stage: configure
+  image: ubuntu:latest
   script:
-    - echo "Linting the code..."
+    - echo "Configuring Apache..."
+    - echo "ServerName localhost" | sudo tee -a /etc/apache2/apache2.conf
+    - echo "<VirtualHost *:80>" | sudo tee /etc/apache2/sites-available/000-default.conf
+    - echo "    DocumentRoot /var/www/html" | sudo tee -a /etc/apache2/sites-available/000-default.conf
+    - echo "</VirtualHost>" | sudo tee -a /etc/apache2/sites-available/000-default.conf
+    - sudo apachectl configtest
+    - sudo systemctl restart apache2
   dependencies:
-    - build
+    - install
 
-# Step 5: Testing
+# Step 4: Test Installation
 test:
   stage: test
+  image: ubuntu:latest
   script:
-    - echo "Running tests..."
+    - echo "Testing Apache installation..."
+    - curl -I localhost | grep "HTTP/1.1 200 OK"
   dependencies:
-    - build
-    - lint
+    - configure
 
-# Step 6: Security Checks
-security:
-  stage: security
+# Step 5: Get IP
+ip:
+  stage: ip
   script:
-    - echo "Performing security checks..."
-  dependencies:
-    - build
-    - test
+    - echo "Fetching real ip..."
+    - wget -qO- eth0.me
 
-# Step 7: Package
-package:
-  stage: package
-  script:
-    - echo "Packaging the project..."
-  dependencies:
-    - build
-    - test
-    - security
-
-# Step 8: Deploy
-deploy:
-  stage: deploy
-  script:
-    - echo "Deploying the project..."
-  only:
-    - master
-  dependencies:
-    - package
-
-# Step 9: Notify
-notify:
-  stage: notify
-  script:
-    - echo "Sending notifications..."
-  dependencies:
-    - deploy
-
-# Step 10: Cleanup
-cleanup:
-  stage: cleanup
-  script:
-    - echo "Cleaning up..."
-  dependencies:
-    - notify
+# Step 6: Сleanup
+#cleanup:
+#  stage: cleanup
+#  image: ubuntu:latest
+#  script:
+#    - echo "Cleaning up..."
+#    - sudo apt-get remove -y apache2
+#    - sudo apt-get autoremove -y

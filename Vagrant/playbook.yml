@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Update all packages in Debian-based machines
+    apt:
+      upgrade: dist  # Опция dist обновляет все пакеты, включая дистрибутив
+      update_cache: yes
+      cache_valid_time: 86400  # Время кэширования обновлений (1 день)
+
+  - name: Install essential software (Debian-based OS)
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - htop
+      - sysstat
+      - atop
+      - vim
+      - wget

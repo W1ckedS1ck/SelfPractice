@@ -65,14 +65,14 @@
      gitlab-runner register
      ```
      We do not need to connect runners if we work in gitlab in [web](https://gitlab.com) like separate instances.  
-   - In gitlab.com we can create our runner easily by pressing  
-      Project settings - CI\CD - Runners - [New Project Runner](https://gitlab.com/learning4800734/Runners/-/runners/new)
-      <img width="781" alt="image" src="https://github.com/user-attachments/assets/6813e615-14cc-4d5b-b2b5-53e4eb765ac1">  
-       - To create a group runner we need to press New group runner and run this
-      ```bash
-      gitlab-runner register  --url https://gitlab.com  --token glrt-OUR_TOKEN  
-      gitlab-runner run
-      ```
+ - In gitlab.com we can create our runner easily by pressing  
+    Project settings - CI\CD - Runners - [New Project Runner](https://gitlab.com/learning4800734/Runners/-/runners/new)
+    <img width="781" alt="image" src="https://github.com/user-attachments/assets/6813e615-14cc-4d5b-b2b5-53e4eb765ac1">  
+ - To create a group runner we need to press New group runner and run this
+    ```bash
+    gitlab-runner register  --url https://gitlab.com  --token glrt-OUR_TOKEN  
+    gitlab-runner run
+    ```
  - Lets create our first pipeline:
    ```bash
    touch .gitlab-ci.yml
@@ -117,3 +117,5 @@ We have several steps:
    <img width="225" alt="image" src="https://github.com/user-attachments/assets/2aa0785a-a0f0-4659-a5c6-5775f732f1df">  
    <img width="400" alt="image" src="https://github.com/user-attachments/assets/5263b7e4-9499-4ea9-be98-b182b3ec858e">
 ***
+
+https://gitlab.com/W1ckedS1ck/W1ckedS1ck

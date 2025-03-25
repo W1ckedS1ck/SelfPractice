@@ -78,14 +78,23 @@ fi
 TASK=9
 FILE="test.txt" # Я создам в текущей чтобы было удобно, но если надо перед test.txt вбиваем /tmp/
 touch $FILE ; ls $FILE 
-if test -e "FILE"; then
-    echo "Файл есть. Логируем. OK${TASK}" > test.txt ; cat test.txt
-    if test -s "FILE"; then
-
+if test -e "$FILE"; then
+    echo "Файл есть. Логируем. OK${TASK}" > $FILE ; cat $FILE
+    if test -s "$FILE"; then
+        echo "В файле что-то есть. OK${TASK}"
+    else
+        echo "ФАЙЛ ПУСТ!!. ERR${TASK}"
+    fi
 else 
     echo "Файла нет. Мне жаль.. ERR${TASK}"
 fi
+rm $FILE
 #10 Проверить, может ли оператор if анализировать код завершения программ  без всяких условий в скобках. Например if ping -c3 yandex.ru ...
-
-
+TASK=10
+if ping -c3 yandex.ru > /dev/null ; then
+    echo "Пингуется. OK${TASK}"
+else
+    echo "Не пингуется. ERR${TASK}"
+fi
+echo $(date)
 ```

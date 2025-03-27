@@ -5,6 +5,7 @@
 SCRIPT_NAME=$(basename $0)
 LOG="${SCRIPT_NAME}.log" # Я буду логи валить в текущую папку скрипта, но если надо перед $ вбиваем /tmp/
 exec > "$LOG" 2>&1
+
 #1. Написать проверку, что число является шестизначным.
 TASK=1
 num=$1
@@ -13,40 +14,45 @@ if (( num >= 100000 && num <= 999999 )); then
 else
     echo "Число не шестизначное. ERR${TASK}"
 fi
+
 #2. Написать проверку, что переменная YES = "Y"
 TASK=2
 YES=$1
-if [[ "$YES" == "Y" || "$YES" == "y" ]]; then
+if [[ "$YES" == "Y" ]]; then
     echo "Переменная YES = 'Y'. OK${TASK}"
 else
     echo "Переменная YES != 'Y'. ERR${TASK}"
 fi
+
 #3. Написать проверку переменная YES1 = "Y" или "y"
 TASK=3
 YES=$1
-if [[ "$YES" == "Y" ]]; then
+if [[ "$YES" == "Y" || "$YES" == "y" ]]; then
     echo "Переменная YES = 'Y или y'. OK${TASK}"
 else
     echo "Переменная YES != 'Y или y'. ERR${TASK}"
 fi
+
 #4. Написать проверку, что значение переменной NO содержится в строке "NnНн".
 TASK=4
-NO=$1
-if [[ "$NO" =~ "NnНн" ]]; then
-    echo "Переменная NO = 'Y'. OK${TASK}"
+NO="$1"
+if [[ "$NO" =~ [NnНн] ]]; then
+    echo "Переменная содержится в строке "NnНн". OK${TASK}"
 else
-    echo "Переменная NO != 'Y'. ERR${TASK}"
+    echo "Переменная НЕ содержится в строке "NnНн". ERR${TASK}"
 fi
+
 #5. Написать код, для вычисления модуля числа $ABS переменной $VAR
 TASK=5
 VAR=$1
-if (( VAR > 0 )); then
+if (( VAR >= 0 )); then
     ABS=$VAR
     echo "|$ABS| и так положительная.  ${TASK}"
 else 
     ABS=$(( -VAR ))
     echo "|$ABS| (была отрицательная или переменная не была числом).  ${TASK}"
 fi
+
 #6.  Написать проверку, что A=5, B - отрицательное и переменная YES="n" или "N"  . При выполнении всех условий выдать в stderr сообщение об ошибке.
 TASK=6
 A=$1
@@ -61,24 +67,26 @@ fi
 #7. Написать проверку, что переменная $TEST >= "TEST". использовать отрицание.
 TASK=7
 A=$1
-if ! [[ "$A" <  "TEST" ]]; then
+if ! [[ "$A" < "TEST" ]]; then
     echo "Переменная TEST годная. OK${TASK}"
 else
     echo "Переменная TEST не прошла тест :D. ERR${TASK}"
 fi
+
 #8. То же, что п.7, но без использования отрицания и c командой else.
 TASK=8
 A=$1
-if [[ "$A" >  "TEST" ]]; then
-    echo "Переменная TEST годная. OK${TASK}"
-else
+if [[ "$A" < "TEST" ]]; then
     echo "Переменная TEST не прошла тест :D. ERR${TASK}"
+else
+    echo "Переменная TEST годная. OK${TASK}"
 fi
+
 #9. Создать пустой файл /tmp/test.txt, проверить, что файл создан. В случае успеха заполнить его любой информацией и провести проверку, что этот файл не "пустой" #Записать сообщение об этом в файл /tmp/test.log
 TASK=9
 FILE="test.txt" # Я создам в текущей чтобы было удобно, но если надо перед test.txt вбиваем /tmp/
 touch $FILE ; ls $FILE 
-if test -e "$FILE"; then
+if test -f "$FILE"; then
     echo "Файл есть. Логируем. OK${TASK}" > $FILE ; cat $FILE
     if test -s "$FILE"; then
         echo "В файле что-то есть. OK${TASK}"
@@ -89,6 +97,7 @@ else
     echo "Файла нет. Мне жаль.. ERR${TASK}"
 fi
 rm $FILE
+
 #10 Проверить, может ли оператор if анализировать код завершения программ  без всяких условий в скобках. Например if ping -c3 yandex.ru ...
 TASK=10
 if ping -c3 yandex.ru > /dev/null ; then

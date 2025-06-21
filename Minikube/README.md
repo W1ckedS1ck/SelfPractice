@@ -3,10 +3,11 @@
  - The goal is to remember how to work with Kubernetes.   
  - The task is to build and deploy an application written in Go and test its operation.
 
-1. First step Launching a new instance on aws
+1. The first step Launching a new instance on AWS
    <img width="671" alt="image" src="https://github.com/user-attachments/assets/e8fee444-629a-48d6-8ff3-8191c6ae89af" />
 
-2. The second step is installing docker on it.
+2. The second step will be to install Docker, go, minicube on it  
+2.1 Docker
     https://docs.docker.com/engine/install/ubuntu/
     ```sh
     # Add Docker's official GPG key:
@@ -30,4 +31,20 @@
     newgrp docker
     docker version
     ```
-3. Third step - We write (or use) the application that our developers have prepared.
+   2.2 GO  
+
+    ```sh
+    sudo apt update
+    sudo apt install golang
+    go version
+    ```
+4. The third step - We write (or use) the application that our developers have prepared.  
+   Lets check the application is in operable state:
+    ```sh
+   go build -o app
+   ./app
+     ```
+   <img width="336" alt="image" src="https://github.com/user-attachments/assets/58956dc6-ac2f-4857-9f16-576b3f427a46" />
+   <img width="412" alt="image" src="https://github.com/user-attachments/assets/6f5bc33b-bd2d-4164-b253-22a12d62bb2d" />
+   IT WORKS :)
+6. The fourth step is to make a simple dockerfile but with a multi-stage build so that the application is more lightweight.

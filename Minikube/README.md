@@ -31,20 +31,22 @@
     newgrp docker
     docker version
     ```
-   2.2 GO  
-
+   2.2 Go  
     ```sh
     sudo apt update
     sudo apt install golang
     go version
     ```
-4. The third step - We write (or use) the application that our developers have prepared.  
+3. The third step - We write (or use) the application that our developers have prepared.  
    Lets check the application is in operable state:
-    ```sh
+   ```sh
    go build -o app
    ./app
-     ```
+   ```
    <img width="336" alt="image" src="https://github.com/user-attachments/assets/58956dc6-ac2f-4857-9f16-576b3f427a46" />
    <img width="412" alt="image" src="https://github.com/user-attachments/assets/6f5bc33b-bd2d-4164-b253-22a12d62bb2d" />
    IT WORKS :)
-6. The fourth step is to make a simple dockerfile but with a multi-stage build so that the application is more lightweight.
+4. The fourth step is to make a simple [dockerfile](https://raw.githubusercontent.com/W1ckedS1ck/SelfPractice/refs/heads/main/Minikube/Dockerfile) but with a multi-stage build so that the application is more lightweight.
+   ```sh
+   docker build -t k8s-go-app:v1 .
+   ```

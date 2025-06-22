@@ -55,14 +55,7 @@
      <img width="1280" alt="image" src="https://github.com/user-attachments/assets/612a4e91-ca67-471d-821b-5ab5c7e8ae23" />      
     AAAAAnnndd it doesn't work in AWS. Not a problem. Lets try to use GCP.  <br>
     <img width="791" alt="image" src="https://github.com/user-attachments/assets/8cac3f82-004b-419f-9149-d07292330496" /> <br>
-
-   2.4 microk8s  
-    ```sh
-    sudo snap install microk8s --classic
-    microk8s status --wait-ready
-    alias k='microk8s kubectl'
-    ```
-4. The third step - We write (or use) the application that our developers have prepared.  
+3. The third step - We write (or use) the application that our developers have prepared.  
    Lets check the application is in operable state:
    ```sh
    go build -o app
@@ -70,10 +63,38 @@
    ```
    <img width="336" alt="image" src="https://github.com/user-attachments/assets/58956dc6-ac2f-4857-9f16-576b3f427a46" />
    <img width="412" alt="image" src="https://github.com/user-attachments/assets/6f5bc33b-bd2d-4164-b253-22a12d62bb2d" />
-   IT WORKS :)
-5. The fourth step is to make a simple [dockerfile](https://raw.githubusercontent.com/W1ckedS1ck/SelfPractice/refs/heads/main/Minikube/Dockerfile) but with a multi-stage build so that the application is more lightweight.
+   IT WORKS :)  
+4. The fourth step is to make a simple [dockerfile](https://raw.githubusercontent.com/W1ckedS1ck/SelfPractice/refs/heads/main/Minikube/Dockerfile) but with a multi-stage build so that the application is more lightweight.
    ```sh
    docker build -t k8s-go-app:v1 .
    ```
-   <img width="674" alt="image" src="https://github.com/user-attachments/assets/62250ec2-972b-4dc4-94d2-3bda7c328142" />
-
+   <img width="674" alt="image" src="https://github.com/user-attachments/assets/62250ec2-972b-4dc4-94d2-3bda7c328142" />  <br>
+   Redone this for my GCP as well  
+   <img width="843" alt="image" src="https://github.com/user-attachments/assets/85891ea0-0363-451e-9f53-ed41f8e0ffb0" />  <br>
+5. The next step is simple. Since our application is not in the registry, we add it to the minicube and apply the deployment manifest.
+   ```sh
+   minikube image load k8s-go-app:v1
+   kubectl apply -f k8s/deployment.yaml
+   ```
+   <img width="720" alt="image" src="https://github.com/user-attachments/assets/30d8812e-355b-4322-96ff-7662768c3f01" /> <br>
+   Next we should deploy 
+   ```sh
+   kubectl apply -f k8s/service.yaml
+   minikube tunnel
+   ```
+   <img width="1318" alt="image" src="https://github.com/user-attachments/assets/26a514d0-c967-4c28-881f-04c90f1e027f" /> <br>
+6. Let's complicate the task. I want our application from minicube to be accessible from outside.
+   ```sh
+   sudo snap install ngrok
+   ngrok config add-authtoken MY_TOKEN
+   ngrok http 10.96.174.36:8080 #The internal IP needs to be substituted.
+   ```
+   <img width="1732" alt="image" src="https://github.com/user-attachments/assets/10d5b19f-37e7-4675-bf69-abdc52038019" />
+7. It's time to check the reliability.
+   ```sh
+   sudo reboot
+   minikube start
+   minikube tunnel
+   ngrok http 10.96.174.36:8080
+   ```
+   <img width="1733" alt="image" src="https://github.com/user-attachments/assets/8fd204a2-484d-4532-839b-16a0655031ab" />
